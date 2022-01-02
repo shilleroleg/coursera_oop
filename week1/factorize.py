@@ -11,6 +11,8 @@ def factorize(x):
 
 
 class TestFactorize(unittest.TestCase):
+    """Задача по созданию модульного теста функции factorize"""
+
     def test_wrong_types_raise_exception(self):
         """проверяет, что передаваемый в функцию аргумент типа float или str вызывает исключение TypeError.
         Тестовый набор входных данных:  'string',  1.5
@@ -40,7 +42,7 @@ class TestFactorize(unittest.TestCase):
 
         for x, ans in zip(cases, answers):
             with self.subTest(x=x):
-                self.assertEqual(x, ans)
+                self.assertEqual(factorize(x), ans)
 
     def test_simple_numbers(self):
         """
@@ -52,7 +54,7 @@ class TestFactorize(unittest.TestCase):
 
         for x, ans in zip(cases, answers):
             with self.subTest(x=x):
-                self.assertEqual(x, ans)
+                self.assertEqual(factorize(x), ans)
 
     def test_two_simple_multipliers(self):
         """
@@ -65,7 +67,7 @@ class TestFactorize(unittest.TestCase):
 
         for x, ans in zip(cases, answers):
             with self.subTest(x=x):
-                self.assertEqual(x, ans)
+                self.assertEqual(factorize(x), ans)
 
     def test_many_multipliers(self):
         """
@@ -73,12 +75,12 @@ class TestFactorize(unittest.TestCase):
         числом элементов больше 2.
         Набор тестовых данных: 1001 → (7, 11, 13) ,   9699690 → (2, 3, 5, 7, 11, 13, 17, 19)
         """
-        cases = (101, 9699690)
+        cases = (1001, 9699690)
         answers = ((7, 11, 13), (2, 3, 5, 7, 11, 13, 17, 19))
 
         for x, ans in zip(cases, answers):
             with self.subTest(x=x):
-                self.assertEqual(x, ans)
+                self.assertEqual(factorize(x), ans)
 
 
 if __name__ == '__main__':
