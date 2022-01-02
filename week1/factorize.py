@@ -20,7 +20,8 @@ class TestFactorize(unittest.TestCase):
         cases = ('string', 1.5)
         for x in cases:
             with self.subTest(x=x):
-                self.assertRaises(TypeError, factorize, x)
+                with self.assertRaises(TypeError):
+                    factorize(x)
 
     def test_negative(self):
         """
@@ -30,7 +31,8 @@ class TestFactorize(unittest.TestCase):
         cases = (-1, -10, -100)
         for x in cases:
             with self.subTest(x=x):
-                self.assertRaises(ValueError, factorize, x)
+                with self.assertRaises(ValueError):
+                    factorize(x)
 
     def test_zero_and_one_cases(self):
         """
@@ -38,11 +40,10 @@ class TestFactorize(unittest.TestCase):
         Набор тестовых данных: 0 → (0, ),  1 → (1, )
         """
         cases = (0, 1)
-        answers = ((0, ), (1, ))
 
-        for x, ans in zip(cases, answers):
+        for x in cases:
             with self.subTest(x=x):
-                self.assertEqual(factorize(x), ans)
+                self.assertEqual(factorize(x), (x,))
 
     def test_simple_numbers(self):
         """
@@ -50,11 +51,10 @@ class TestFactorize(unittest.TestCase):
         Набор тестовых данных: 3 → (3, ),  13 → (13, ),   29 → (29, )
         """
         cases = (3, 13, 29)
-        answers = ((3,), (13,), (29,))
 
-        for x, ans in zip(cases, answers):
+        for x in cases:
             with self.subTest(x=x):
-                self.assertEqual(factorize(x), ans)
+                self.assertEqual(factorize(x), (x,))
 
     def test_two_simple_multipliers(self):
         """
