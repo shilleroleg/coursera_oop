@@ -47,10 +47,12 @@ class Polyline:
         self.speeds.append(speed)
 
     def del_last_point(self):
-        self.points.pop(-1)
+        if len(self.points) > 0:
+            self.points.pop(-1)
 
     def del_last_speed(self):
-        self.speeds.pop(-1)
+        if len(self.speeds) > 0:
+            self.speeds.pop(-1)
 
     def set_points(self):
         """функция перерасчета координат опорных точек"""
@@ -118,9 +120,11 @@ class Knot(Polyline):
                              (int(points[p_n][0]), int(points[p_n][1])),
                              (int(points[p_n + 1][0]), int(points[p_n + 1][1])), width)
 
-    def draw_points(self, width=3, color=(255, 255, 255)):
-        super().draw_points()
-        self.draw_line(self.get_knot(self._steps), width, color)
+    def draw_points(self, style="points", width=3, color=(255, 255, 255)):
+        if style == "points":
+            super().draw_points()
+        elif style == "line":
+            self.draw_line(self.get_knot(self._steps), width, color)
 
 
 # =======================================================================================
@@ -132,12 +136,13 @@ def draw_help():
     font1 = pygame.font.SysFont("courier", 24)
     font2 = pygame.font.SysFont("serif", 24)
     data = []
-    data.append(["F1", "Show Help"])
+    data.append(["F1", "Show/Hide Help"])
     data.append(["R", "Restart"])
     data.append(["P", "Pause/Play"])
     data.append(["Num+", "More points"])
     data.append(["Num-", "Less points"])
     data.append(["", ""])
+    # data.append(["A", "Add new line"])
     data.append(["Mouse left", "Add anchor point "])
     data.append(["Mouse right", "Delete last anchor point "])
     data.append(["", ""])
@@ -187,6 +192,9 @@ if __name__ == "__main__":
                     show_help = not show_help
                 if event.key == pygame.K_KP_MINUS:
                     steps -= 1 if steps > 1 else 0
+                if event.key == pygame.K_a:
+                    # Press 'A' add new line
+                    pass
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
@@ -202,7 +210,8 @@ if __name__ == "__main__":
         hue = (hue + 1) % 360
         color.hsla = (hue, 100, 50, 100)
         knot.set_steps(steps)
-        knot.draw_points(width=3, color=color)
+        knot.draw_points(style="points")
+        knot.draw_points(style="line", width=3, color=color)
         if not pause:
             knot.set_points()
         if show_help:
