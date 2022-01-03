@@ -46,6 +46,12 @@ class Polyline:
     def add_speed(self, speed):
         self.speeds.append(speed)
 
+    def del_last_point(self):
+        self.points.pop(-1)
+
+    def del_last_speed(self):
+        self.speeds.pop(-1)
+
     def set_points(self):
         """функция перерасчета координат опорных точек"""
         for p in range(len(self.points)):
@@ -132,6 +138,9 @@ def draw_help():
     data.append(["Num+", "More points"])
     data.append(["Num-", "Less points"])
     data.append(["", ""])
+    data.append(["Mouse left", "Add anchor point "])
+    data.append(["Mouse right", "Delete last anchor point "])
+    data.append(["", ""])
     data.append([str(knot.get_steps()), "Current points"])
 
     pygame.draw.lines(gameDisplay, (255, 50, 50, 255), True, [
@@ -140,7 +149,7 @@ def draw_help():
         gameDisplay.blit(font1.render(
             text[0], True, (128, 128, 255)), (100, 100 + 30 * i))
         gameDisplay.blit(font2.render(
-            text[1], True, (128, 128, 255)), (200, 100 + 30 * i))
+            text[1], True, (128, 128, 255)), (280, 100 + 30 * i))
 
 
 # =======================================================================================
@@ -180,8 +189,14 @@ if __name__ == "__main__":
                     steps -= 1 if steps > 1 else 0
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                knot.add_point(Vec2d(event.pos[0], event.pos[1]))
-                knot.add_speed(Vec2d(random.random() * 2, random.random() * 2))
+                if event.button == 1:
+                    # Press left mouse button - add point
+                    knot.add_point(Vec2d(event.pos[0], event.pos[1]))
+                    knot.add_speed(Vec2d(random.random() * 2, random.random() * 2))
+                elif event.button == 3:
+                    # Press right mouse button - delete last point
+                    knot.del_last_point()
+                    knot.del_last_speed()
 
         gameDisplay.fill((0, 0, 0))
         hue = (hue + 1) % 360
