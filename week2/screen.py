@@ -142,11 +142,12 @@ def draw_help():
     data.append(["Num+", "More points"])
     data.append(["Num-", "Less points"])
     data.append(["", ""])
-    # data.append(["A", "Add new line"])
+    data.append(["A", "Add new line"])
     data.append(["Mouse left", "Add anchor point "])
     data.append(["Mouse right", "Delete last anchor point "])
     data.append(["", ""])
-    data.append([str(knot.get_steps()), "Current points"])
+    data.append([str(knots[-1].get_steps()), "Current points"])
+    data.append([str(len(knots)), "Number of lines "])
 
     pygame.draw.lines(gameDisplay, (255, 50, 50, 255), True, [
         (0, 0), (800, 0), (800, 600), (0, 600)], 5)
@@ -165,7 +166,7 @@ if __name__ == "__main__":
     gameDisplay = pygame.display.set_mode(SCREEN_DIM)
     pygame.display.set_caption("MyScreenSaver")
 
-    knot = Knot()
+    knots = [Knot()]
 
     steps = 35
     working = True
@@ -183,7 +184,8 @@ if __name__ == "__main__":
                 if event.key == pygame.K_ESCAPE:
                     working = False
                 if event.key == pygame.K_r:
-                    knot.clear_all()
+                    [k.clear_all() for k in knots]
+                    steps = 35
                 if event.key == pygame.K_p:
                     pause = not pause
                 if event.key == pygame.K_KP_PLUS:
@@ -194,26 +196,30 @@ if __name__ == "__main__":
                     steps -= 1 if steps > 1 else 0
                 if event.key == pygame.K_a:
                     # Press 'A' add new line
-                    pass
+                    knots.append(Knot())
+                    steps = 35
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     # Press left mouse button - add point
-                    knot.add_point(Vec2d(event.pos[0], event.pos[1]))
-                    knot.add_speed(Vec2d(random.random() * 2, random.random() * 2))
+                    knots[-1].add_point(Vec2d(event.pos[0], event.pos[1]))
+                    knots[-1].add_speed(Vec2d(random.random() * 2, random.random() * 2))
                 elif event.button == 3:
                     # Press right mouse button - delete last point
-                    knot.del_last_point()
-                    knot.del_last_speed()
+                    knots[-1].del_last_point()
+                    knots[-1].del_last_speed()
 
         gameDisplay.fill((0, 0, 0))
         hue = (hue + 1) % 360
-        color.hsla = (hue, 100, 50, 100)
-        knot.set_steps(steps)
-        knot.draw_points(style="points")
-        knot.draw_points(style="line", width=3, color=color)
-        if not pause:
-            knot.set_points()
+        for i, knot in enumerate(knots):
+            color.hsla = ((hue * i) % 360, 100, 50, 100)
+
+            knot.set_steps(steps)
+            knot.draw_points(style="points")
+            knot.draw_points(style="line", width=3, color=color)
+            if not pause:
+                knot.set_points()
+
         if show_help:
             draw_help()
 
