@@ -46,17 +46,25 @@ class AbstractEffect(Hero, ABC):
 
 
 class AbstractPositive(AbstractEffect, ABC):
-    """Определяют интерфейс классов наследников, для подгруппы классов положительных эффектов"""
+    """
+    Определяют интерфейс классов наследников, для подгруппы классов положительных эффектов.
+    В AbstractPositive будем возвращать список наложенных отрицательных эффектов без изменений,
+    чтобы не определять данный метод во всех положительных эффектах
+    """
     def get_negative_effects(self):
         return self.base.get_negative_effects()
 
 
 class AbstractNegative(AbstractEffect, ABC):
-    """Определяют интерфейс классов наследников, для подгруппы классов отрицательных эффектов"""
+    """
+    Определяют интерфейс классов наследников, для подгруппы классов отрицательных эффектов.
+    Для отрицательных эффектов неизменным останется список положительных эффектов.
+    """
     def get_positive_effects(self):
         return self.base.get_positive_effects()
 
 
+# Объявим несколько положительных эффектов
 class Berserk(AbstractPositive):
     """
     Берсерк
@@ -105,6 +113,7 @@ class Blessing(AbstractPositive):
         return temp_stats
 
 
+# Аналогично положительным эффектам, объявим отрицательные
 class Weakness(AbstractNegative):
     """
     Слабость
