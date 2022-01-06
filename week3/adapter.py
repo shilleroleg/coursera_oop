@@ -48,8 +48,30 @@ class System:
 
 
 class MappingAdapter:
+    """
+    Реализуем адаптер для класса
+    """
     def __init__(self, adaptee):
-        pass
+        self.adaptee = adaptee
 
     def lighten(self, grid):
-        pass
+        # Определение размера карты
+        w = len(grid[0])
+        h = len(grid)
+        # Инициализируем пустые списки препятствий и источников света
+        lights = []
+        obstacles = []
+        # Считаем положения объектов с исходной карты
+        for hi in range(h):
+            for wi in range(w):
+                if grid[hi][wi] == 1:
+                    lights.append((wi, hi))
+                if grid[hi][wi] == -1:
+                    obstacles.append((wi, hi))
+        # Установка размера карты в адаптируемом объекте
+        self.adaptee.set_dim((w, h))
+        # Передадим положения объектов адаптируемому объекту
+        self.adaptee.set_lights(lights)
+        self.adaptee.set_obstacles(obstacles)
+        # Вернем полученную карту освещенности
+        return self.adaptee.generate_lights()
