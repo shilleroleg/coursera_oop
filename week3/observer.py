@@ -56,15 +56,12 @@ class ShortNotificationPrinter(AbstractObserver):
 
 class FullNotificationPrinter(AbstractObserver):
     def __init__(self):
-        self.__titles = set()
         self.achievements = []
 
     def update(self, achievement):
-        title = achievement.get('title')
         # Проверяем, что достижение уникальное
-        if title not in self.__titles:
+        if achievement not in self.achievements:
             self.achievements.append(achievement)
-            self.__titles.add(title)
 
 
 if __name__ == "__main__":
