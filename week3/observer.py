@@ -18,18 +18,89 @@
 from abc import ABC, abstractmethod
 
 
-class ObservableEngine:
+class Engine:
     pass
 
 
-class AbstractObserver:
-    pass
+class ObservableEngine(Engine):
+    def __init__(self):
+        self.__subscriber = set()
+
+    def subscribe(self, subscriber):
+        self.__subscriber.add(subscriber)
+
+    def unsubscribe(self, subscriber):
+        self.__subscriber.remove(subscriber)
+
+    def notify(self, message):
+        for subscriber in self.__subscriber:
+            subscriber.update(message)
 
 
-class ShortNotificationPrinter:
-    pass
+class AbstractObserver(ABC):
+    # def __init__(self, name):
+    #     self.name = name
+
+    @abstractmethod
+    def update(self, achievement):
+        pass
 
 
-class FullNotificationPrinter:
-    pass
+class ShortNotificationPrinter(AbstractObserver):
+    def __init__(self):
+        self.achievements = set()
+
+    def update(self, achievement):
+        self.achievements.add(achievement.get('title'))
+
+
+class FullNotificationPrinter(AbstractObserver):
+    def __init__(self):
+        self.__titles = set()
+        self.achievements = []
+
+    def update(self, achievement):
+        title = achievement.get('title')
+        # Проверяем, что достижение уникальное
+        if title not in self.__titles:
+            self.achievements.append(achievement)
+            self.__titles.add(title)
+
+
+if __name__ == "__main__":
+    achieve = {"title": "Покоритель", "text": "Дается при выполнении всех заданий в игре"}
+    achieve2 = {"title": "Неудачник", "text": "Дается при провале всех заданий в игре"}
+    achieve3 = {"title": "Покоритель", "text": "Дается при выполнении всех заданий в игре"}
+
+    short1 = ShortNotificationPrinter()
+    full1 = FullNotificationPrinter()
+    full2 = FullNotificationPrinter()
+
+    manager = ObservableEngine()
+
+    manager.subscribe(short1)
+    manager.subscribe(full1)
+    manager.subscribe(full2)
+
+    manager.notify(achieve)
+
+    print(short1.achievements)
+    print(full1.achievements)
+    print(full2.achievements)
+
+    # Проверяем отписку
+    print('Unsubscribe')
+    manager.unsubscribe(full2)
+    manager.notify(achieve2)
+
+    print(short1.achievements)
+    print(full1.achievements)
+    print(full2.achievements)
+
+    # Достижения хранятся только уникальные
+    manager.notify(achieve3)
+
+    print(short1.achievements)
+    print(full1.achievements)
+
 
