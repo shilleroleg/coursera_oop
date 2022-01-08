@@ -99,5 +99,3 @@ if __name__ == "__main__":
 
     print(short1.achievements)
     print(full1.achievements)
-
-
