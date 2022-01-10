@@ -24,12 +24,20 @@ class ScreenHandle(pygame.Surface):
         super().__init__(*args, **kwargs)
         self.fill(colors["wooden"])
 
+    # def __enter__(self):
+    #     return self
+    #
+    # def __exit__(self, exc_type, exc_val, exc_tb):
+    #     pass
+
     def draw(self, canvas):
         if self.successor is not None:
             canvas.blit(self.successor, self.next_coord)
             self.successor.draw(canvas)
 
     # FIXME connect_engine
+    def connect_engine(self, engine):
+        pass
 
 
 class GameSurface(ScreenHandle):
