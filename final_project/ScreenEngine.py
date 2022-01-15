@@ -52,7 +52,8 @@ class GameSurface(ScreenHandle):
             for i in range(len(self.game_engine.map[0]) - min_x):
                 for j in range(len(self.game_engine.map) - min_y):
                     self.blit(self.game_engine.map[min_y + j][min_x + i][0],
-                              (i * sprite_size, j * sprite_size))
+                              (i * sprite_size,
+                               j * sprite_size))
         else:
             self.fill(colors["white"])
 
@@ -84,7 +85,7 @@ class GameSurface(ScreenHandle):
         hero_pos = self.game_engine.hero.position
         min_x = int(max(0, hero_pos[0] - screen_size[0] + 3))
         min_y = int(max(0, hero_pos[1] - screen_size[1] + 3))
-        return (min_x, min_y)
+        return min_x, min_y
 
 
 class ProgressBar(ScreenHandle):
@@ -94,8 +95,7 @@ class ProgressBar(ScreenHandle):
         self.fill(colors["wooden"])
 
     def connect_engine(self, engine):
-        # FIXME save engine and send it to next in chain
-        self.game_engine = engine
+        self.engine = engine
         if self.successor is not None:
             return self.successor.connect_engine(engine)
 
@@ -151,7 +151,6 @@ class ProgressBar(ScreenHandle):
         self.blit(font.render(f'{self.engine.score:.4f}', True, colors["black"]),
                   (550, 70))
 
-        # draw next surface in chain
         if self.successor is not None:
             canvas.blit(self.successor, self.next_coord)
             return self.successor.draw(canvas)
@@ -177,13 +176,11 @@ class InfoWindow(ScreenHandle):
             self.blit(font.render(text, True, colors["black"]),
                       (5, 20 + 18 * i))
 
-        # draw next surface in chain
         if self.successor is not None:
             canvas.blit(self.successor, self.next_coord)
             return self.successor.draw(canvas)
 
     def connect_engine(self, engine):
-        # FIXME set this class as Observer to engine and send it to next in chain
         self.engine = engine
         engine.subscribe(self)
         if self.successor is not None:
@@ -205,12 +202,10 @@ class HelpWindow(ScreenHandle):
         self.data.append(["Num+", "Zoom +"])
         self.data.append(["Num-", "Zoom -"])
         self.data.append([" R ", "Restart Game"])
-    # FIXME You can add some help information
+        self.data.append(["Coursera", "OOP final project"])
 
     def connect_engine(self, engine):
-        # FIXME save engine and send it to next in chain
         self.engine = engine
-        engine.subscribe(self)
         if self.successor is not None:
             return self.successor.connect_engine(engine)
 
@@ -219,6 +214,7 @@ class HelpWindow(ScreenHandle):
         if self.engine.show_help:
             alpha = 128
         self.fill((0, 0, 0, alpha))
+        size = self.get_size()
         font1 = pygame.font.SysFont("courier", 24)
         font2 = pygame.font.SysFont("serif", 24)
         if self.engine.show_help:
@@ -230,7 +226,6 @@ class HelpWindow(ScreenHandle):
                 self.blit(font2.render(text[1], True, ((128, 128, 255))),
                           (150, 50 + 30 * i))
 
-        # draw next surface in chain
         if self.successor is not None:
             canvas.blit(self.successor, self.next_coord)
             return self.successor.draw(canvas)
