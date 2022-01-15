@@ -42,13 +42,9 @@ def create_game(sprite_size, is_new):
         Service.service_init(sprite_size)
         Service.reload_game(engine, hero)
 
-        drawer = ScreenEngine.GameSurface((640, 480),
-                                          pygame.SRCALPHA,
-                                          (0, 480),
-                                          ScreenEngine.ProgressBar((640, 120),
-                                                                   (640, 0),
-                                                                   ScreenEngine.InfoWindow((160, 600),
-                                                                                           (50, 50),
+        drawer = ScreenEngine.GameSurface((640, 480), pygame.SRCALPHA, (0, 480),
+                                          ScreenEngine.ProgressBar((640, 120), (640, 0),
+                                                                   ScreenEngine.InfoWindow((160, 600), (50, 50),
                                                                                            ScreenEngine.HelpWindow((700, 500),
                                                                                                                    pygame.SRCALPHA,
                                                                                                                    (0, 0),
