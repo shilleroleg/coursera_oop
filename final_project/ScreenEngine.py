@@ -188,7 +188,6 @@ class HelpWindow(ScreenHandle):
         self.data.append(["Num+", "Zoom +"])
         self.data.append(["Num-", "Zoom -"])
         self.data.append([" R ", "Restart Game"])
-        self.data.append(["Coursera", "OOP final project"])
 
     def connect_engine(self, engine):
         self.engine = engine

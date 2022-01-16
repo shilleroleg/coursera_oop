@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import pygame
 import random
+import Service
 
 
 def create_sprite(img, sprite_size):
@@ -11,11 +12,9 @@ def create_sprite(img, sprite_size):
     return sprite
 
 
-# FIXME
 class AbstractObject(ABC):
-    def __init__(self):
-        pass
 
+    @abstractmethod
     def draw(self, display):
         pass
 
@@ -37,6 +36,9 @@ class Ally(AbstractObject, Interactive):
     def interact(self, engine, hero):
         self.action(engine, hero)
 
+    def draw(self, display):
+        display.draw_object(self.sprite, self.position)
+
 
 class Creature(AbstractObject):
 
@@ -44,15 +46,18 @@ class Creature(AbstractObject):
         self.sprite = icon
         self.stats = stats
         self.position = position
+        self.max_hp = None
         self.calc_max_HP()
         self.hp = self.max_hp
 
     def calc_max_HP(self):
         self.max_hp = 5 + self.stats["endurance"] * 2
 
+    def draw(self, display):
+        display.draw_object(self.sprite, self.position)
+
 
 class Hero(Creature):
-
     def __init__(self, stats, icon):
         pos = [1, 1]
         self.level = 1
@@ -68,6 +73,30 @@ class Hero(Creature):
             self.stats["endurance"] += 2
             self.calc_max_HP()
             self.hp = self.max_hp
+
+
+class Enemy(Creature, Interactive):
+    def __init__(self, icon, stats, xp, position):
+        self.sprite = icon
+        self.stats = stats
+        self.position = position
+        self.calc_max_HP()
+        self.hp = self.max_hp
+        self.exp = xp
+        self.action = Service.add_gold
+
+    def interact(self, engine, hero):
+        hit = bool(random.getrandbits(1))
+        if hit:
+            hero.hp -= self.stats['strength']
+        if hero.hp <= 0:
+            engine.notify("GAME OVER")
+            engine.game_process = False
+        else:
+            hero.exp += self.exp
+            for m in hero.level_up():
+                engine.notify(m)
+            self.action(engine, hero)
 
 
 class Effect(Hero):
@@ -131,16 +160,6 @@ class Effect(Hero):
 
     @abstractmethod
     def apply_effect(self):
-        pass
-
-
-# FIXME
-#
-class Enemy(Creature, Interactive):
-    def __init__(self, icon, stats, xp, position):
-        pass
-
-    def interact(self, engine, hero):
         pass
 
 
