@@ -102,9 +102,9 @@ class EndMap(MapFactory):
                         '000000000000000000000000000000000000000'
                         ]
             self.Map = list(map(list, self.Map))
-            for i in self.Map:
-                for j in range(len(i)):
-                    i[j] = wall if i[j] == '0' else floor1
+            for map_ in self.Map:
+                for ind in range(len(map_)):
+                    map_[ind] = wall if map_[ind] == '0' else floor1
          
         def get_map(self):
             return self.Map
@@ -207,14 +207,28 @@ class RandomMap(MapFactory):
             return self.objects
 
 
-# FIXME
 # add classes for YAML !empty_map and !special_map{}
 class EmptyMap(MapFactory):
     yaml_tag = "!empty_map"
 
     class Map:
         def __init__(self):
-            self.Map = [[0 for _ in range(41)] for _ in range(41)]
+            self.Map = ['00000000000000',
+                        '0            0',
+                        '0            0',
+                        '0            0',
+                        '0            0',
+                        '0            0',
+                        '0            0',
+                        '0            0',
+                        '0            0',
+                        '0            0',
+                        '00000000000000'
+                        ]
+            self.Map = list(map(list, self.Map))
+            for map_ in self.Map:
+                for ind in range(len(map_)):
+                    map_[ind] = wall if map_[ind] == '0' else floor1
 
         def get_map(self):
             return self.Map
@@ -247,7 +261,22 @@ class SpecialMap(MapFactory):
 
     class Map:
         def __init__(self):
-            self.Map = [[0 for _ in range(41)] for _ in range(41)]
+            self.Map = ['000000000000000000000000000000000000000',
+                        '0                                     0',
+                        '0                                     0',
+                        '0  0   0  0 0 0  0      0      0 0 0  0',
+                        '0  0   0  0      0      0      0   0  0',
+                        '0  0 0 0  0 0 0  0      0      0   0  0',
+                        '0  0   0  0      0      0      0   0  0',
+                        '0  0   0  0 0 0  0 0 0  0 0 0  0 0 0  0',
+                        '0                                     0',
+                        '0                                     0',
+                        '000000000000000000000000000000000000000'
+                        ]
+            self.Map = list(map(list, self.Map))
+            for map_ in self.Map:
+                for ind in range(len(map_)):
+                    map_[ind] = wall if map_[ind] == '0' else floor1
 
         def get_map(self):
             return self.Map
