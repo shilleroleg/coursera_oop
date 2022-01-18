@@ -1,15 +1,6 @@
 from abc import ABC, abstractmethod
-import pygame
 import random
 import Service
-
-
-def create_sprite(img, sprite_size):
-    icon = pygame.image.load(img).convert_alpha()
-    icon = pygame.transform.scale(icon, (sprite_size, sprite_size))
-    sprite = pygame.Surface((sprite_size, sprite_size), pygame.HWSURFACE)
-    sprite.blit(icon, (0, 0))
-    return sprite
 
 
 class AbstractObject(ABC):

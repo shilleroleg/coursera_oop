@@ -36,8 +36,7 @@ base_stats = {
 def create_game(sprite_size, is_new):
     global hero, engine, drawer, iteration
     if is_new:
-        hero = Objects.Hero(base_stats, Service.create_sprite(
-            os.path.join("texture", "Hero.png"), sprite_size))
+        hero = Objects.Hero(base_stats, Service.create_sprite(os.path.join("texture", "Hero.png"), sprite_size))
         engine = Logic.GameEngine()
         Service.service_init(sprite_size)
         Service.reload_game(engine, hero)
@@ -50,8 +49,7 @@ def create_game(sprite_size, is_new):
                                                                            ))))
     else:
         engine.sprite_size = sprite_size
-        hero.sprite = Service.create_sprite(
-            os.path.join("texture", "Hero.png"), sprite_size)
+        hero.sprite = Service.create_sprite(os.path.join("texture", "Hero.png"), sprite_size)
         Service.service_init(sprite_size, False)
 
     Logic.GameEngine.sprite_size = sprite_size

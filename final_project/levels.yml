@@ -8,4 +8,8 @@ levels:
   - !special_map
     rat: 10
     knight: 10
+  - !special_map
+    rat: 15
+    knight: 15
+  - !random_map {}
   - !random_map {}
