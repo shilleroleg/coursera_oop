@@ -104,10 +104,10 @@ class ProgressBar(ScreenHandle):
         pygame.draw.rect(self, colors["black"], (50, 30, 200, 30), 2)
         pygame.draw.rect(self, colors["black"], (50, 70, 200, 30), 2)
 
-        pygame.draw.rect(self, colors[
-                         "red"], (50, 30, 200 * self.engine.hero.hp / self.engine.hero.max_hp, 30))
-        pygame.draw.rect(self, colors["green"], (50, 70,
-                                                 200 * self.engine.hero.exp / (100 * (2**(self.engine.hero.level - 1))), 30))
+        pygame.draw.rect(self, colors["red"],
+                         (50, 30, 200 * self.engine.hero.hp / self.engine.hero.max_hp, 30))
+        pygame.draw.rect(self, colors["green"],
+                         (50, 70, 200 * self.engine.hero.exp / (100 * (2**(self.engine.hero.level - 1))), 30))
 
         font = pygame.font.SysFont("comicsansms", 20)
         self.blit(font.render(f'Hero at {self.engine.hero.position}', True, colors["black"]), (250, 0))
