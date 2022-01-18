@@ -165,14 +165,24 @@ class Effect(Hero):
 
 class Berserk(Effect):
     def apply_effect(self):
-        pass
+        self.hp = self.base.hp + 50
+        self.stats["strength"] += 10
+        self.stats["endurance"] += 10
+        self.stats["intelligence"] -= 5
+        self.stats["luck"] += 10
 
 
 class Blessing(Effect):
     def apply_effect(self):
-        pass
+        self.stats["strength"] += 5
+        self.stats["endurance"] += 5
+        self.stats["intelligence"] += 5
+        self.stats["luck"] += 5
 
 
 class Weakness(Effect):
     def apply_effect(self):
-        pass
+        self.stats["strength"] -= 5
+        self.stats["endurance"] -= 5
+        self.stats["intelligence"] -= 5
+        self.stats["luck"] -= 5
