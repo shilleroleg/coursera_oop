@@ -12,11 +12,10 @@ ALLY_TEXTURE = os.path.join("texture", "ally")
 def create_sprite(img, sprite_size):
     icon = pygame.image.load(img)
     if icon.get_alpha():
-        print('alfa')
         icon = icon.convert_alpha()
     else:
         icon = icon.convert()
-        icon.set_colorkey((255, 255, 255))
+        icon.set_colorkey((0, 0, 0))
     icon = pygame.transform.scale(icon, (sprite_size, sprite_size))
     sprite = pygame.Surface((sprite_size, sprite_size), pygame.HWSURFACE)
     sprite.blit(icon, (0, 0))

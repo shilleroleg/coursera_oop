@@ -177,3 +177,5 @@ class Weakness(Effect):
         self.stats["endurance"] -= 5
         self.stats["intelligence"] -= 5
         self.stats["luck"] -= 5
+
+
